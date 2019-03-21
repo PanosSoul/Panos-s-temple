@@ -1,0 +1,444 @@
+import java.util.Scanner;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		TicTacToe t1 = new TicTacToe();
+		
+		System.out.println("************");
+		System.out.println("Tic-Tac-Toe!");
+		System.out.println("************");
+		System.out.println("");
+		
+		t1.initializeBoard();
+		System.out.println("Please enter the column (A, B or C) and then the row (1, 2, or 3) of your move.");
+		t1.printBoard();
+		
+		
+		 Scanner sc = new Scanner(System.in);
+		 
+		 System.out.println("Player Move (X): ");
+		 int flag = 1;
+		 String playerImput;
+		 String answer;
+		 
+		 
+		
+		while(!t1.isBoardFull()) {
+			
+			 while(true) {
+				playerImput = sc.nextLine();
+				playerImput = playerImput.toUpperCase();
+				if(!(playerImput.equals("A1") || playerImput.equals("A2")|| playerImput.equals("A3") || playerImput.equals("B1") || 
+				playerImput.equals("B2") || playerImput.equals("B3") || playerImput.equals("C1") || 
+				playerImput.equals("C2") || playerImput.equals("C3"))) 
+					System.out.println("Invalid Input: Please enter the column and row of your move (Example: A1).");
+				else if(!t1.isSpaceFree(playerImput)) 
+					System.out.println("The gap is filled.Try another answer");	
+				else
+					break;
+			 }
+			
+			if(flag == 1) {
+			
+			
+			switch (playerImput) {
+			case "A1":;
+			t1.modifiedBoardForUser("A1");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "A2":; 
+			t1.modifiedBoardForUser("A2");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "A3":;
+			t1.modifiedBoardForUser("A3");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "B1":;
+			t1.modifiedBoardForUser("B1");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "B2":;
+			t1.modifiedBoardForUser("B2");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "B3":;
+			t1.modifiedBoardForUser("B3");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "C1":;
+			t1.modifiedBoardForUser("C1");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "C2":;
+			t1.modifiedBoardForUser("C2");
+			t1.printBoard();
+			flag = 0;
+			break;
+			case "C3":;
+			t1.modifiedBoardForUser("C3");
+			t1.printBoard();
+			flag = 0;
+			break;
+			default: playerImput = "Illegal index";
+		}
+			
+			}
+			
+			if(t1.checkForWin())
+				break;
+			if(t1.isBoardFull())
+				break;
+				
+			
+			 
+			
+			answer = t1.getAnswerFromthePc();
+			while(!t1.isSpaceFree(answer) && (!t1.isBoardFull())) {
+				answer = t1.getAnswerFromthePc();
+		
+			}
+					System.out.println("Computer Move (O): " + answer);
+
+					if(flag==0 && (!t1.isBoardFull())) {
+						;
+					switch(answer) {
+					case "A1": ;
+					t1.modifiedBoardForComputer("A1");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "A2": ;
+					t1.modifiedBoardForComputer("A2");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "A3": ;
+					t1.modifiedBoardForComputer("A3");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "B1":;
+					t1.modifiedBoardForComputer("B1");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "B2":;
+					t1.modifiedBoardForComputer("B2");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "B3":;
+					t1.modifiedBoardForComputer("B3");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "C1":;
+					t1.modifiedBoardForComputer("C1");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "C2":;
+					t1.modifiedBoardForComputer("C2");
+					t1.printBoard();
+					flag = 1;
+					break;
+					case "C3":;
+					t1.modifiedBoardForComputer("C3");
+					t1.printBoard();
+					flag = 1;
+					break;
+					
+					}
+					if(t1.checkForWin())
+						break;
+					if(t1.isBoardFull())
+						break;	
+				
+					
+				}
+		
+				
+			}
+		
+		if(t1.checkForWin()) {
+			if(t1.checkWhoWins() == true)
+				System.out.println("YOU WIN");
+			else
+				System.out.println("YOU LOST");	
+		}
+		if(!t1.checkForWin())
+			System.out.println("It's a tie");
+				
+	}
+}
+
+
+
+
+
+import java.util.Random;
+
+public class TicTacToe {
+
+	    private char[][] board; 
+	    public String answer;
+	    int i,j;
+				
+	    public TicTacToe() {
+	        board = new char[3][3];
+	        initializeBoard();
+	    }
+		
+		
+	    
+	    public void initializeBoard() {
+			
+	        
+	        for (int i = 0; i < 3; i++) {
+				
+	            
+	            for (int j = 0; j < 3; j++) {
+	                board[i][j] = ' ';
+	            }
+	        }
+	    }
+		
+		
+	    //Printing the table.
+	    public void printBoard() {
+	        System.out.println("   A   B   C");
+	        for (int i = 0; i < 3; i++) {
+	        	if(i==0)
+	        		System.out.print(1);
+	        	if(i==1)
+	        		System.out.print(2);
+	        	if(i==2)
+	        		System.out.print(3);
+	            System.out.print("|");
+	   
+	            for (int j = 0; j < 3; j++) {
+	                System.out.print(board[i][j] + " | ");
+	            }
+	            System.out.println();
+	        }
+	    }
+	    
+	    //change of the table after user move.
+	    public char[][] modifiedBoardForUser(String GamersChoice){
+	    	switch (GamersChoice) {
+			case "A1":;
+			board[0][0] = 'X';
+			break;
+			case "A2":;
+			board[1][0] = 'X';
+			break;
+			case "A3":;
+			board[2][0] = 'X';
+			break;
+			case "B1":;
+			board[0][1] = 'X';
+			break;
+			case "B2":;
+			board[1][1] = 'X';
+			break;
+			case "B3":;
+			board[2][1] = 'X';
+			break;
+			case "C1":;
+			board[0][2] = 'X';
+			break;
+			case "C2":;
+			board[1][2] = 'X';
+			break;
+			case "C3":;
+			board[2][2] = 'X';
+			break;
+		}
+	    	return board;
+	    }
+	    	
+	    	//change the table after pc move
+	    	public char[][] modifiedBoardForComputer(String GamersChoice){
+		    	switch (GamersChoice) {
+				case "A1":;
+				board[0][0] = 'O';
+				break;
+				case "A2":;
+				board[1][0] = 'O';
+				break;
+				case "A3":;
+				board[2][0] = 'O';
+				break;
+				case "B1":;
+				board[0][1] = 'O';
+				break;
+				case "B2":;
+				board[1][1] = 'O';
+				break;
+				case "B3":;
+				board[2][1] = 'O';
+				break;
+				case "C1":;
+				board[0][2] = 'O';
+				break;
+				case "C2":;
+				board[1][2] = 'O';
+				break;
+				case "C3":;
+				board[2][2] = 'O';
+				break;
+			}
+	    	
+	    	
+	    	
+	    	return board;
+	    }
+	   
+	    
+	    //random move from the pc
+	    public String getAnswerFromthePc() 
+		{
+			Random rand = new Random();
+			int index = rand.nextInt(9) +0;
+			switch (index) {
+				case 0:	 answer = "A1";
+				break;
+				case 1:  answer =  "A2";
+				break;
+				case 2:  answer = "A3";
+				break;
+				case 3:  answer = "B1";
+				break;
+				case 4:  answer =  "B2";
+				break;
+				case 5:  answer =  "B3";
+				break;
+				case 6:  answer =  "C1";
+				break;
+				case 7:  answer =  "C2";
+				break;
+				case 8:  answer =  "C3";
+				break;
+				default: answer = "Illegal index";
+			}
+			return answer;
+		};
+		
+		
+		//checking if the gap which is selected is free.
+		public boolean isSpaceFree(String GamersChoice) {
+			
+			if(GamersChoice.charAt(0)=='A')
+				j = 0;
+			else if(GamersChoice.charAt(0)=='B')
+				j = 1;
+			else if(GamersChoice.charAt(0)=='C')
+				j = 2;
+			if(GamersChoice.charAt(1)=='1')
+				i = 0;
+			else if(GamersChoice.charAt(1)=='2')
+				i = 1;
+			else if(GamersChoice.charAt(1)=='3')
+				i = 2;  
+			if(board[i][j] == ' ')  {
+				return true;
+			}
+			else
+				return false;
+	
+		            
+		      
+		}
+		
+	   
+	     
+	    
+		
+	   //checking if the table is full
+	    public boolean isBoardFull() {
+	        boolean isFull = true;
+			
+	        for (int i = 0; i < 3; i++) {
+	            for (int j = 0; j < 3; j++) {
+	                if (board[i][j] == ' ') {
+	                    isFull = false;
+	                }
+	            }
+	        }
+			
+	        return isFull;
+	    }
+		
+	    
+	    private boolean checkRows() {
+	        for (int i = 0; i < 3; i++) {
+	            if (checkEquality(board[i][0], board[i][1], board[i][2]) == true) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+		
+		
+	    
+	    private boolean checkColumns() {
+	        for (int i = 0; i < 3; i++) {
+	            if (checkEquality(board[0][i], board[1][i], board[2][i]) == true) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+		
+		
+	    
+	    private boolean checkDiagonals() {
+	        return ((checkEquality(board[0][0], board[1][1], board[2][2]) == true) || (checkEquality(board[0][2], board[1][1], board[2][0]) == true));
+	    }
+		
+		
+	   
+	    private boolean checkEquality(char c1, char c2, char c3) {
+	        return ((c1 != ' ') && (c1 == c2) && (c2 == c3));
+	    }
+		
+	    
+	    public boolean checkForWin() {
+	        return (checkRows() || checkColumns() || checkDiagonals());
+	    }
+	    
+	    int quantityofX = 0;
+	    int quantityofO = 0;
+	    
+	    
+	    
+	    //because in this case the user is starting first if the number of X is bigget than the number of O in the table user win or if X=O pc win.
+	    public boolean checkWhoWins() {
+	    	for(int i = 0; i<3; i++) {
+	    		for(int j = 0; j<3; j++) {
+	    			if(board[i][j] == 'X') 
+	    				quantityofX++;
+	    			else if(board[i][j] == 'O')
+	    				quantityofO++;
+	    						
+	    		}
+	    	}
+	    	if (quantityofX > quantityofO)
+	    		return true;
+	    	else 
+	    		return false;
+	    }
+		
+
+	}
